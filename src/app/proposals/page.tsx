@@ -9,6 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import logger from '@/lib/logger';
 
 async function getProposals(urlParam?: string): Promise<Proposal[]> {
+    /*
+    const AZURE_STORAGE_URL = process.env.AZURE_STORAGE_URL || 'https://proposalcpqstb.blob.core.windows.net/propostas/';
+    const url = `${AZURE_STORAGE_URL}multi-quote/proposals/${id}.json`;    
+    */
     const defaultUrl = 'https://proposalcpqstb.blob.core.windows.net/propostas/multi-quote/proposals/quotationfinished.json';
     const url = urlParam || defaultUrl;
 

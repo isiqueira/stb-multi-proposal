@@ -6,7 +6,8 @@ import type { Quotation, User } from '@/types';
 import logger from '@/lib/logger';
 
 async function getProposalData(id: string): Promise<{quotations: Quotation[], user: User} | null> {
-    const url = `https://proposalcpqstb.blob.core.windows.net/propostas/multi-quote/proposals/${id}.json`;
+    const AZURE_STORAGE_URL = process.env.AZURE_STORAGE_URL || 'https://proposalcpqstb.blob.core.windows.net/propostas/';
+    const url = `${AZURE_STORAGE_URL}multi-quote/proposals/${id}.json`;
     logger.info(`[ProposalPage] Fetching proposal data for ID: ${id} from ${url}`);
 
     try {

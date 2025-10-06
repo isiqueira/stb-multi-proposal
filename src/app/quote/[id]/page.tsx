@@ -6,27 +6,25 @@ import type { Quotation } from '@/types';
 import logger from '@/lib/logger';
 
 async function getQuoteData(id: string): Promise<Quotation | null> {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : 'http://localhost:9002';
+  const AZURE_STORAGE_URL = process.env.AZURE_STORAGE_URL || 'https://proposalcpqstb.blob.core.windows.net/propostas/';
 
-    const url = `https://proposalcpqstb.blob.core.windows.net/propostas/multi-quote/quotes/${id}.json`;
-    logger.info(`[QuotePage] Fetching quote data for ID: ${id} from ${url}`);
+  const url = `${AZURE_STORAGE_URL}multi-quote/quotes/${id}.json`;
+  logger.info(`[QuotePage] Fetching quote data for ID: ${id} from ${url}`);
 
-    try {
-        const res = await fetch(url, { cache: 'no-store' });
+  try {
+      const res = await fetch(url, { cache: 'no-store' });
 
-        if (res.ok) {
-          const data = await res.json();
-          logger.info(`[QuotePage] Quote data fetched successfully for ID: ${id}`)
-          return data as Quotation;
-        }
-        return null;
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred while fetching data.';
-      logger.error({ err, id }, `[QuotePage] Error fetching or processing quotation data: ${errorMessage}`);
+      if (res.ok) {
+        const data = await res.json();
+        logger.info(`[QuotePage] Quote data fetched successfully for ID: ${id}`)
+        return data as Quotation;
+      }
       return null;
-    } 
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred while fetching data.';
+    logger.error({ err, id }, `[QuotePage] Error fetching or processing quotation data: ${errorMessage}`);
+    return null;
+  } 
 }
 
 export default async function QuotePage({ params }: { params: { id: string } }) {
