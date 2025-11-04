@@ -7,7 +7,7 @@ export async function GET() {
   try {
     
 
-    const storageUrl = process.env.AZURE_STORAGE_URL || 'https://proposalcpqstb.blob.core.windows.net/propostas/';
+    const storageUrl = `${process.env.AZURE_STORAGE_URL}check.json` || 'https://proposalcpqstb.blob.core.windows.net/propostas/check.json';
 
     const response = await fetch(storageUrl);
 
