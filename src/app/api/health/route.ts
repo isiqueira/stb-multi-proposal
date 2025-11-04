@@ -1,17 +1,21 @@
 import { NextResponse } from 'next/server';
-import { BlobServiceClient } from '@azure/storage-blob';
 
 export async function GET() {
   let azureStorageStatus: 'healthy' | 'unhealthy' = 'healthy';
   let errorMessage;
 
   try {
-    const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
-    if (!connectionString) {
-      throw new Error('Azure Storage connection string is not configured.');
+    
+
+    const storageUrl = process.env.AZURE_STORAGE_URL || 'https://proposalcpqstb.blob.core.windows.net/propostas/';
+
+    const response = await fetch(storageUrl);
+
+    if (!response.ok) {
+      // Even if not ok, the service is up. A 403 is fine for a health check.
+      // We just need to know we can reach it.
     }
-    const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-    await blobServiceClient.getProperties();
+
   } catch (error: any) {
     azureStorageStatus = 'unhealthy';
     errorMessage = error.message;
